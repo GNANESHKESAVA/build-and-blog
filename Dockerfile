@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir \
     gitpython \
     pygithub \dsfsdv sdzV 
 
-    aDc
+    aDcsg
     AS
     cac
     ac
@@ -35,4 +35,5 @@ EXPOSE 8080
 
 # Run webhook server with gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--timeout", "300", "webhook_server:app"]
+
 
