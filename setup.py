@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-
+j
 setup(
     name="codeinspector",
     version="0.1.0",
