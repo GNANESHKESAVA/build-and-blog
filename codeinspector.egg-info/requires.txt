@@ -1,4 +1,0 @@
-click
-gitpython
-pygithub
-google-generativeai
