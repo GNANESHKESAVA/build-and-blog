@@ -1,0 +1,25 @@
+# cloudbuild.yaml
+
+steps:
+# 1. Rebuild and push the image before running the job.
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/cloudrun-demo', '.']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/cloudrun-demo']
+
+# 2. Execute the Cloud Run Job with the 'commit' command.
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - run
+  - jobs
+  - execute
+  - code-inspector-job
+  - --region=us-central1
+  - --wait
+  # Pass the 'commit' command and '--no-verify' flag as separate arguments
+  # The --no-verify flag is often necessary because the 'commit' step
+  # relies on staged files which might not be set up in the Cloud Build environment.
+  - --args="commit"
+  - --args="--no-verify"
