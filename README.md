@@ -12,7 +12,7 @@ AI Code Inspector is a CLI tool that automates git commits, PR descriptions, and
 ## Quick Start (Docker)
 
 The easiest way to run without installing Python dependencies is using Docker.
-
+hi
 1.  **Set Environment Variables**:
     Ensure `GOOGLE_API_KEY` and `GITHUB_TOKEN` are set in your terminal.
 
@@ -88,3 +88,4 @@ python -m codeinspector.cli preview
 # Docker
 .\codeinspector.bat preview
 ```
+
