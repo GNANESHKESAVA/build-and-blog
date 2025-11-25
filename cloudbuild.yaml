@@ -1,11 +1,11 @@
 steps:
   # 1. Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/webhook-server', '.']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/build-and-blog-479222/ai-code-inspector/webhook-server', '.']
 
   # 2. Push the image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/webhook-server']
+    args: ['push', 'us-central1-docker.pkg.dev/build-and-blog-479222/ai-code-inspector/webhook-server']
 
   # 3. Deploy to Cloud Run as a SERVICE
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -15,7 +15,7 @@ steps:
       - 'deploy'
       - 'codeinspector-webhook'
       - '--image'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/webhook-server'
+      - 'us-central1-docker.pkg.dev/build-and-blog-479222/ai-code-inspector/webhook-server'
       - '--region'
       - 'us-central1'
       - '--platform'
@@ -27,7 +27,7 @@ steps:
       - 'GITHUB_WEBHOOK_SECRET=codeinspector-webhook-secret:latest'
 
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/webhook-server'
+  - 'us-central1-docker.pkg.dev/build-and-blog-479222/ai-code-inspector/webhook-server'
 
 substitutions:
   _GITHUB_TOKEN: "needs-to-be-set-in-trigger"
