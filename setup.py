@@ -10,7 +10,10 @@ setup(
         "pygithub",
         "google-generativeai",
     ],
-    entry_points={
+    asdsadsadsa
+    sadsadsadsa
+    entry_poin
+    ts={
         "console_scripts": [
             "codeinspector=codeinspector.cli:codeinspector",
         ],
