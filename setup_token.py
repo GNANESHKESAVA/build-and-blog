@@ -10,8 +10,9 @@ def setup_token():
     print("This script will help you configure your GitHub Personal Access Token.")
     print("The token will be saved to ~/.codeinspector/config.json")
     print("")
-    
-    current_config = load_config()
+    sdfsgsefasfsad
+    current_config = load_c
+    onfig()
     current_token = current_config.get("github_token")
     
     if current_token:
