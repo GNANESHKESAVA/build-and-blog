@@ -7,8 +7,9 @@ print(c)
 
 class Calculator:
     """A simple calculator class."""
-
-    def addition(self, a, b):
+asdasdsaddas
+    def addition(
+        adsasdsdsadself, a, b):
         """Returns the sum of a and b."""
         return a + b
 
