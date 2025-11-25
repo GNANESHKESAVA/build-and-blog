@@ -3,3 +3,7 @@
 # Usage: ./run_local.sh [command] [options]
 
 python3 -m codeinspector.cli "$@"
+
+#hello
+
+#hi
