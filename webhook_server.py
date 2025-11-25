@@ -103,6 +103,70 @@ def health():
     return jsonify({'status': 'healthy'}), 200
 
 
+@app.route('/history', methods=['GET'])
+def history():
+    """View PR review history"""
+    try:
+        from codeinspector.db.pr_repository import PRReviewRepository
+        from codeinspector.config import load_config
+        
+        config = load_config()
+        db_repo = PRReviewRepository(config.get('db_path'))
+        reviews = db_repo.get_pr_review_history(limit=50)
+        db_repo.close()
+        
+        html = """
+        <html>
+        <head>
+            <title>CodeInspector History</title>
+            <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+                h1 { color: #333; }
+                .review { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+                .approved { border-left: 5px solid #28a745; }
+                .rejected { border-left: 5px solid #dc3545; }
+                .meta { color: #666; font-size: 0.9em; margin-bottom: 10px; }
+                .status { font-weight: bold; }
+                .status.approved { color: #28a745; }
+                .status.rejected { color: #dc3545; }
+            </style>
+        </head>
+        <body>
+            <h1>🤖 CodeInspector Review History</h1>
+        """
+        
+        if not reviews:
+            html += "<p>No reviews found yet.</p>"
+        
+        for review in reviews:
+            status_class = "approved" if review['status'] == 'approved' else "rejected"
+            icon = "✅" if review['status'] == 'approved' else "❌"
+            
+            html += f"""
+            <div class="review {status_class}">
+                <div class="meta">
+                    {icon} <strong>PR #{review['pr_number']}</strong> in {review['repository']}
+                    <br>
+                    📅 {review['timestamp']}
+                </div>
+                <div>
+                    Status: <span class="status {status_class}">{review['status'].upper()}</span>
+                    <br>
+                    🐛 Issues found: {review['issues_found']}
+                    <br>
+                    <a href="{review.get('review_url', '#')}" target="_blank">View on GitHub</a>
+                </div>
+            </div>
+            """
+            
+        html += "</body></html>"
+        return html
+        
+    except Exception as e:
+        return f"Error loading history: {str(e)}", 500
+
+
+
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 8080))
     app.run(host='0.0.0.0', port=port)
