@@ -1,25 +1,36 @@
-# cloudbuild.yaml
-
 steps:
-# 1. Rebuild and push the image before running the job.
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/cloudrun-demo', '.']
+  # 1. Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/webhook-server', '.']
 
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/cloudrun-demo']
+  # 2. Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/webhook-server']
 
-# 2. Execute the Cloud Run Job with the 'commit' command.
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args:
-  - run
-  - jobs
-  - execute
-  - code-inspector-job
-  - --region=us-central1
-  - --wait
-  # Pass the 'commit' command and '--no-verify' flag as separate arguments
-  # The --no-verify flag is often necessary because the 'commit' step
-  # relies on staged files which might not be set up in the Cloud Build environment.
-  - --args="commit"
-  - --args="--no-verify"
+  # 3. Deploy to Cloud Run as a SERVICE
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'codeinspector-webhook'
+      - '--image'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/webhook-server'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars'
+      - 'GITHUB_TOKEN=$_GITHUB_TOKEN'
+      - '--set-secrets'
+      - 'GITHUB_WEBHOOK_SECRET=codeinspector-webhook-secret:latest'
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/ai-code-inspector/webhook-server'
+
+substitutions:
+  _GITHUB_TOKEN: "needs-to-be-set-in-trigger"
+
+options:
+  logging: CLOUD_LOGGING_ONLY

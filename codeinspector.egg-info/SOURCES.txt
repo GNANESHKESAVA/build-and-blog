@@ -1,0 +1,15 @@
+README.md
+setup.py
+codeinspector/__init__.py
+codeinspector/agents.py
+codeinspector/cli.py
+codeinspector/config.py
+codeinspector/git_handler.py
+codeinspector/github_client.py
+codeinspector/quality_checker.py
+codeinspector.egg-info/PKG-INFO
+codeinspector.egg-info/SOURCES.txt
+codeinspector.egg-info/dependency_links.txt
+codeinspector.egg-info/entry_points.txt
+codeinspector.egg-info/requires.txt
+codeinspector.egg-info/top_level.txt
