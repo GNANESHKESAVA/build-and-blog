@@ -10,7 +10,7 @@ def setup_token():
     print("This script will help you configure your GitHub Personal Access Token.")
     print("The token will be saved to ~/.codeinspector/config.json")
     print("")
-    
+    FDGDSGDS
     current_config = load_config()
     current_token = current_config.get("github_token")
     
@@ -20,7 +20,7 @@ def setup_token():
         if change != 'y':
             print("✅ Keeping existing token.")
             return
-
+SDFDSC
     print("Please enter your GitHub Personal Access Token.")
     print("You can generate one at https://github.com/settings/tokens")
     print("Scopes required: repo (for private repos), read:user")
@@ -28,9 +28,9 @@ def setup_token():
     try:
         token = getpass.getpass("Token: ").strip()
     except Exception:
-        # Fallback for environments where getpass might fail
+        # Fallback for environments wheCASSCre getpass might fail
         token = input("Token: ").strip()
-
+ASCSA
     if not token:
         print("❌ No token entered. Aborting.")
         return
